@@ -1,0 +1,571 @@
+/* =====================================================================
+   MULOTANE LODGE - ESTILOS (style.css)
+   =====================================================================
+
+   GUIA RÁPIDO: "QUERO MUDAR..."  ->  "EDITE ESTA VARIÁVEL" (secção 1 abaixo)
+   ---------------------------------------------------------------------
+   Cor dos botões (magenta) ............ --botao
+   Cor verde do site ................... --verde
+   Cor do fundo da página .............. --fundo   (e --fundo-alt para secções alternadas)
+   Cor do texto ........................ --texto   (sobre fundo escuro: --texto-claro)
+   Cor das secções escuras ............. --fundo-escuro
+   Cores do cardápio ................... --menu-bege, --menu-madeira, --menu-oliva, --menu-dourado
+   Força da camada escura nas fotos do cardápio ... --menu-sobreposicao-topo / -base
+   Tipos de letra ...................... --fonte-titulo, --fonte-texto, --fonte-menu-titulo, --fonte-menu
+   Cantos arredondados ................. --raio
+   Largura máxima do conteúdo .......... --largura-max
+
+   ÍNDICE
+    1. Variáveis (cores, fontes, medidas)      8. Cardápio
+    2. Base                                    9. Eventos e faixa de reserva
+    3. Componentes comuns                     10. Galeria e lightbox
+    4. Cabeçalho                              11. Testemunhos, contacto, rodapé
+    5. Hero (logótipo como fundo)             12. Botões flutuantes
+    6. Por que Mulotane e Acomodação          13. Popup "VER"
+    7. Restaurante (abas, horários, reserva)  14. Animações e acessibilidade
+
+   NOTA: se duas regras mexem na mesma coisa, ganha a que estiver mais abaixo no ficheiro.
+   ===================================================================== */
+
+
+/* =====================================================================
+   1. VARIÁVEIS  -  é aqui que se mudam as cores do site
+   ===================================================================== */
+:root {
+  /* Marca (cores do logótipo) */
+  --verde: #4C8A2B;
+  --laranja: #F9AE2F;
+  --magenta: #C80F86;
+  --botao: var(--magenta);                                          /* cor dos botões */
+  --botao-hover: color-mix(in srgb, var(--botao) 85%, #000);        /* botão ao passar o rato (15% mais escuro) */
+  --texto-botao: #FFFFFF;
+
+  /* Fundos */
+  --fundo: #FBF9F4;
+  --fundo-alt: #F1ECE0;
+  --fundo-escuro: #2E2E2E;
+  --fundo-cartao: #FFFFFF;
+
+  /* Texto */
+  --texto: #2E2E2E;
+  --texto-claro: #F5F1E8;           /* texto sobre fundos escuros */
+
+  /* Pormenores */
+  --estrela: #E8A317;
+  --whatsapp: #25D366;
+
+  /* Cardápio */
+  --menu-bege: #F5F1E8;
+  --menu-madeira: #8B5A2B;
+  --menu-oliva: #4A5D23;
+  --menu-oliva-hover: #5E7A2E;
+  --menu-dourado: #EBC48C;                          /* preços */
+  --menu-titulo-grupo: #D9A55F;                     /* títulos dos grupos (Cocktails, Shooters...) */
+  --menu-sobreposicao-topo: rgba(26, 18, 10, .66);  /* camada escura sobre a foto de fundo: topo */
+  --menu-sobreposicao-base: rgba(26, 18, 10, .90);  /* ... e base (quanto maior, mais escuro) */
+
+  /* Tipos de letra */
+  --fonte-titulo: 'Playfair Display', serif;
+  --fonte-texto: Inter, sans-serif;
+  --fonte-menu-titulo: Montserrat, sans-serif;
+  --fonte-menu: Poppins, sans-serif;
+
+  /* Medidas */
+  --raio: 24px;
+  --largura-max: 1140px;
+  --altura-cabecalho: 64px;
+  --sombra: 0 10px 30px color-mix(in srgb, var(--texto) 8%, transparent);
+}
+
+
+/* =====================================================================
+   2. BASE
+   ===================================================================== */
+* { box-sizing: border-box; margin: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+body { font-family: var(--fonte-texto); background: var(--fundo); color: var(--texto); line-height: 1.65; }
+h1, h2, h3, h4 { font-family: var(--fonte-titulo); line-height: 1.2; }
+a { color: inherit; }
+img { display: block; }
+.escondido, [hidden] { display: none !important; }
+:focus-visible { outline: 3px solid var(--botao); outline-offset: 2px; }
+
+
+/* =====================================================================
+   3. COMPONENTES COMUNS
+   ===================================================================== */
+
+/* Caixa central do conteúdo */
+.container { max-width: var(--largura-max); margin: auto; padding: 0 18px; }
+.estreito { max-width: 720px; text-align: center; }
+
+/* Secções (espaçamento vertical e fundos alternados) */
+.secao { padding: 80px 0; }
+.secao.alt { background: var(--fundo-alt); }
+.secao h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); text-align: center; margin-bottom: 40px; }
+.secao h2.esquerda { text-align: left; margin-bottom: 18px; }
+.subtitulo { text-align: center; max-width: 640px; margin: -20px auto 30px; opacity: .9; }
+.secao .pequeno { font-size: .9rem; margin: 10px 0; }
+
+/* Secção escura (restaurante) */
+.escura { background: var(--fundo-escuro); color: var(--texto-claro); }
+.escura h2, .escura h3 { color: var(--texto-claro); }
+
+/* Grelhas */
+.grade { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.dividido { display: grid; gap: 36px; align-items: center; }
+@media (min-width: 800px) { .dividido { grid-template-columns: 1fr 1fr; } }
+
+/* Cartão branco */
+.cartao {
+  background: var(--fundo-cartao); color: var(--texto);
+  border: 1px solid var(--fundo-alt); border-radius: var(--raio);
+  box-shadow: var(--sombra); padding: 28px; overflow: hidden;
+  transition: transform .4s, box-shadow .4s;
+}
+.cartao:hover { transform: translateY(-6px); box-shadow: 0 18px 40px color-mix(in srgb, var(--texto) 14%, transparent); }
+.cartao h3 { font-size: 1.25rem; margin: 8px 0; }
+.cartao.sem-margem { padding: 0; }
+.cartao .conteudo { padding: 22px; }
+
+/* Foto (com fundo de reserva e zoom ao passar o rato) */
+.foto { background: linear-gradient(135deg, var(--verde), var(--fundo-escuro)); overflow: hidden; aspect-ratio: 4 / 3; }
+.foto.arredondada { border-radius: var(--raio); box-shadow: 0 14px 34px color-mix(in srgb, var(--texto) 20%, transparent); }
+.foto img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s; }
+.foto:hover img { transform: scale(1.07); }
+
+/* Botões */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--botao); color: var(--texto-botao);
+  border: 2px solid var(--botao); border-radius: 999px;
+  padding: 12px 26px; font: 600 .95rem var(--fonte-texto);
+  text-decoration: none; white-space: nowrap; cursor: pointer;
+  transition: background .25s, border-color .25s, transform .25s;
+}
+.btn:hover { background: var(--botao-hover); border-color: var(--botao-hover); transform: translateY(-2px); }
+.btn .i { margin-right: 8px; }
+.btn-contorno-claro { background: transparent; border-color: #fff; color: #fff; }               /* para fundos escuros */
+.btn-contorno-claro:hover { background: rgba(255, 255, 255, .18); border-color: #fff; }
+.btn-contorno-escuro { background: transparent; border-color: var(--texto); color: var(--texto); } /* para fundos claros */
+.btn-contorno-escuro:hover { background: var(--texto); border-color: var(--texto); color: var(--fundo); }
+.linha-botoes { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.linha-botoes.centro { justify-content: center; }
+
+.aba:hover { background: var(--botao-hover); border-color: var(--botao-hover); transform: translateY(-2px); }
+.btn .i { margin-right: 8px; }
+.btn-contorno-claro { background: transparent; border-color: #fff; color: #fff; }               /* para fundos escuros */
+.btn-contorno-claro:hover { background: rgba(255, 255, 255, .18); border-color: #fff; }
+.btn-contorno-escuro { background: transparent; border-color: var(--texto); color: var(--texto); } /* para fundos claros */
+.btn-contorno-escuro:hover { background: var(--texto); border-color: var(--texto); color: var(--fundo); }
+.linha-botoes { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.linha-botoes.centro { justify-content: center; }
+
+/* Ícones SVG (tamanho e cor) */
+.i { width: 1.2em; height: 1.2em; flex: none; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; vertical-align: -.22em; }
+.i.grande { width: 1.7em; height: 1.7em; color: var(--botao); }
+.i.dourado { color: var(--estrela); }
+.i.apagada { color: var(--estrela); opacity: .3; }
+.icone-caixa {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 56px; height: 56px; border-radius: 18px; font-size: 1.7rem;
+  background: color-mix(in srgb, var(--verde) 14%, #fff); color: var(--verde);
+}
+.icone-caixa .i { width: 1em; height: 1em; }
+
+/* Lista com visto */
+.lista-visto { list-style: none; padding: 0; margin-bottom: 20px; }
+.lista-visto li { position: relative; padding: 5px 0 5px 34px; }
+.lista-visto .i { position: absolute; left: 0; top: 9px; color: var(--botao); }
+
+/* Citação */
+blockquote { border-left: 3px solid var(--botao); padding-left: 16px; margin: 20px 0 24px; font-style: italic; }
+cite { display: block; font-style: normal; font-weight: 600; font-size: .9rem; margin-top: 4px; }
+
+
+/* =====================================================================
+   4. CABEÇALHO (fixo no topo, com desfoque)
+   ===================================================================== */
+.saltar { position: absolute; left: -999px; top: 8px; z-index: 100; background: var(--botao); color: #fff; padding: 8px 14px; border-radius: 8px; }
+.saltar:focus { left: 8px; }
+
+#barra-progresso { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--botao); z-index: 60; }
+
+.cabecalho {
+  position: fixed; inset: 0 0 auto; z-index: 50;
+  background: color-mix(in srgb, var(--fundo) 85%, transparent);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  border-bottom: 1px solid color-mix(in srgb, var(--texto) 10%, transparent);
+}
+.barra { display: flex; align-items: center; justify-content: space-between; gap: 18px; height: var(--altura-cabecalho); }
+.logo { display: flex; align-items: center; font: 700 1.3rem var(--fonte-titulo); text-decoration: none; }
+.logo img { height: 40px; width: auto; margin-right: 8px; mix-blend-mode: multiply; }
+
+.menu-principal { display: none; gap: 22px; font-size: .92rem; font-weight: 500; }
+.menu-principal a { position: relative; text-decoration: none; }
+.menu-principal a::after { content: ""; position: absolute; left: 0; bottom: -4px; height: 2px; width: 0; background: var(--botao); transition: width .3s; }
+.menu-principal a:hover::after { width: 100%; }
+.menu-principal.aberto { display: flex; flex-direction: column; position: absolute; top: var(--altura-cabecalho); left: 0; right: 0; background: var(--fundo); padding: 16px 18px; }
+
+.btn-cabecalho { padding: 9px 20px; }
+.btn-menu { background: none; border: 0; font-size: 1.6rem; cursor: pointer; color: var(--texto); }
+@media (min-width: 900px) { .menu-principal { display: flex; } .btn-menu { display: none; } }
+@media (max-width: 560px) {
+  .logo { font-size: 1.05rem; }
+  .logo img { height: 34px; }
+  .btn-cabecalho { padding: 8px 14px; font-size: .85rem; }
+  .btn-cabecalho .i { display: none; }
+}
+
+
+/* =====================================================================
+   5. HERO  -  o logótipo (img/logo.webp) é o fundo
+      Camadas (de cima para baixo): logótipo com "multiply" (o branco desaparece),
+      brilho laranja, brilho verde, fundo branco.
+   ===================================================================== */
+.hero {
+  position: relative; min-height: 100vh; display: flex; align-items: center; overflow: hidden;
+  color: var(--texto); background-color: #fff; background-repeat: no-repeat;
+  background-blend-mode: multiply, normal, normal;
+  background-image:
+    url(img/logo.webp),
+    radial-gradient(circle at 8% 12%, color-mix(in srgb, var(--laranja) 22%, transparent), transparent 38%),
+    radial-gradient(circle at 4% 96%, color-mix(in srgb, var(--verde) 18%, transparent), transparent 40%);
+  background-size: min(46vw, 640px), auto, auto;
+  background-position: right 5% center, 0 0, 0 0;
+}
+.hero-folhas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.hero-texto { position: relative; width: 100%; padding-top: 90px; padding-bottom: 70px; }
+.hero h1 { font-size: clamp(2.2rem, 6vw, 4rem); max-width: min(560px, 52vw); }
+.hero p { font-size: 1.2rem; max-width: min(560px, 52vw); margin-top: 18px; color: color-mix(in srgb, var(--texto) 85%, transparent); }
+.hero-texto > * { opacity: 0; transform: translateY(24px); animation: subir 1s cubic-bezier(.2, .7, .2, 1) forwards; }
+.hero-texto > :nth-child(2) { animation-delay: .25s; }
+.hero-texto > :nth-child(3) { animation-delay: .5s; }
+
+.hero-selo {
+  position: absolute; bottom: 28px; left: max(18px, calc((100vw - var(--largura-max)) / 2 + 18px));
+  display: flex; align-items: center; gap: 8px;
+  background: #fff; border: 1px solid var(--fundo-alt); border-radius: 999px;
+  padding: 10px 18px; font-weight: 600; font-size: .88rem;
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--texto) 12%, transparent);
+  animation: flutuar 5s ease-in-out infinite;
+}
+.hero-selo .i { color: var(--botao); }
+.hero-selo .i.dourado { color: var(--estrela); }
+.hero-selo .separador { width: 1px; height: 16px; background: currentColor; opacity: .3; }
+
+/* Telemóvel: logótipo em cima, texto por baixo, tudo centrado */
+@media (max-width: 899px) {
+  .hero {
+    flex-direction: column; justify-content: flex-end; align-items: center; text-align: center;
+    background-size: min(76vw, 380px), auto, auto; background-position: center 84px, 0 0, 0 0;
+  }
+  .hero-texto { padding-top: calc(min(76vw, 380px) + 120px); }
+  .hero h1, .hero p { max-width: none; margin-left: auto; margin-right: auto; }
+  .hero .linha-botoes { justify-content: center; }
+  .hero-selo { position: static; order: 2; margin: 0 auto 24px; width: max-content; }
+}
+
+
+/* =====================================================================
+   6. POR QUE MULOTANE E ACOMODAÇÃO
+   ===================================================================== */
+.grade-quartos { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.etiquetas { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.etiquetas span {
+  display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px;
+  font-size: .74rem; color: var(--texto); background: color-mix(in srgb, var(--verde) 10%, #fff);
+}
+.etiquetas .i { color: var(--verde); }
+.preco-consulta { color: var(--botao); font-weight: 600; margin: 10px 0 14px; }
+.cartao .btn { padding: 11px 18px; font-size: .88rem; }
+
+
+/* =====================================================================
+   7. RESTAURANTE: fundo com foto, abas, conceito, horários, reserva, selos
+   ===================================================================== */
+.fundo-restaurante {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--fundo-escuro) 92%, transparent), color-mix(in srgb, var(--fundo-escuro) 95%, transparent)),
+    url(img/escadas.webp);
+  background-size: cover; background-position: center; background-attachment: fixed;
+}
+
+.abas { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 28px; }
+.aba {
+  background: transparent; color: var(--texto-claro); cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--texto-claro) 40%, transparent);
+  padding: 9px 20px; border-radius: 999px; font: .9rem var(--fonte-texto); transition: .25s;
+}
+.aba.ativa { background: var(--botao); border-color: var(--botao); color: var(--texto-botao); }
+.painel { animation: aparecer-painel .5s ease; }
+
+.dividido h3 { font-size: 1.8rem; }
+.dividido p { margin: 12px 0 20px; }
+.dividido p.pequeno { margin: 10px 0; }
+
+.horarios {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; text-align: center;
+  margin-top: 44px; padding: 20px;
+  border-top: 1px solid color-mix(in srgb, var(--texto-claro) 25%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--texto-claro) 25%, transparent);
+}
+.horarios > div { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+
+.reserva { max-width: 640px; margin: 36px auto 0; text-align: center; }
+.reserva h3 { margin-bottom: 14px; }
+.reserva-campos { display: grid; gap: 10px; }
+@media (min-width: 600px) { .reserva-campos { grid-template-columns: 1fr 1fr auto; } }
+input { padding: 12px 16px; border-radius: 999px; border: 1px solid var(--fundo-alt); font: inherit; background: #fff; color: var(--texto); }
+
+.selos { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 34px; }
+.selos span { border: 1px solid var(--botao); color: var(--texto-claro); padding: 7px 16px; border-radius: 999px; font-size: .85rem; }
+
+
+/* =====================================================================
+   8. CARDÁPIO  (cores próprias: --menu-*)
+      Estrutura:  .menu > .menu-filtros + .menu-opcoes + .menu-cartoes
+                  .menu-card > .menu-cabecalho + .menu-grupo(s) > .menu-item(s)
+   ===================================================================== */
+.menu { font-family: var(--fonte-menu); color: var(--menu-bege); }
+
+/* Filtros por secção */
+.menu-filtros { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.menu-chip {
+  display: inline-flex; align-items: center; gap: 7px; cursor: pointer; transition: .25s;
+  background: transparent; color: var(--menu-bege); padding: 8px 16px; border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--menu-bege) 40%, transparent); font: 500 .82rem var(--fonte-menu);
+}
+.menu-chip:hover { border-color: var(--menu-bege); }
+.menu-chip.ativo { background: var(--menu-oliva); border-color: var(--menu-oliva); color: #fff; }
+.menu-chip .i { color: inherit; }
+
+/* Interruptor vegetariano e botão abrir/fechar grupos */
+.menu-opcoes { display: flex; flex-wrap: wrap; gap: 8px 22px; justify-content: center; align-items: center; margin: 16px 0 26px; font-size: .85rem; }
+.menu-veg { display: flex; gap: 8px; cursor: pointer; }
+.menu-veg input { accent-color: var(--menu-oliva); width: 18px; height: 18px; padding: 0; }
+.menu-expandir { background: none; border: 0; color: var(--menu-titulo-grupo); font: 500 .85rem var(--fonte-menu); text-decoration: underline; cursor: pointer; }
+
+/* Grelha dos cartões: 2 colunas no computador, 1 no telemóvel */
+.menu-cartoes { display: grid; gap: 26px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 470px), 1fr)); align-items: start; }
+
+/* Cartão de cada secção. A foto de fundo vem de --foto (definida pelo script.js a partir do campo "foto" do menu-data.js) */
+.menu-card {
+  padding: 38px 32px 34px; border-radius: var(--raio); color: var(--menu-bege);
+  border: 1px solid color-mix(in srgb, var(--menu-madeira) 55%, transparent);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, .35); text-shadow: 0 1px 3px rgba(0, 0, 0, .55);
+  background-color: #2A1D12; background-size: cover; background-position: center;
+  background-image: linear-gradient(180deg, var(--menu-sobreposicao-topo), var(--menu-sobreposicao-base)), var(--foto);
+}
+
+/* Cabeçalho do cartão: logo numa placa branca, título com ícone, subtítulo, linha */
+.menu-cabecalho { text-align: center; margin-bottom: 22px; }
+.menu-logo { display: inline-flex; background: #fff; border-radius: var(--raio); padding: 14px; margin-bottom: 20px; box-shadow: 0 10px 26px rgba(0, 0, 0, .3); }
+.menu-logo img { width: 96px; height: auto; aspect-ratio: 1 / 1; object-fit: contain; }
+.menu-cabecalho h3 {
+  display: flex; justify-content: center; align-items: center; gap: 10px;
+  font: 600 1.15rem var(--fonte-menu-titulo); letter-spacing: .2em; text-transform: uppercase; color: var(--menu-bege);
+}
+.menu-cabecalho h3 .i { color: var(--menu-titulo-grupo); width: 1.3em; height: 1.3em; }
+.menu-subtitulo { font-size: .85rem; font-weight: 300; opacity: .8; margin-top: 6px; }
+.menu-linha { display: block; width: 56px; height: 2px; margin: 16px auto 0; border-radius: 2px; background: var(--menu-madeira); }
+
+/* Grupos (abrem e fecham) */
+.menu-grupo { margin-top: 10px; }
+.menu-grupo-titulo {
+  display: flex; align-items: center; gap: 10px; cursor: pointer; list-style: none;
+  padding: 10px 0 8px; border-bottom: 1px solid color-mix(in srgb, var(--menu-madeira) 70%, transparent);
+  font: 600 .72rem var(--fonte-menu-titulo); letter-spacing: .22em; text-transform: uppercase; color: var(--menu-titulo-grupo);
+}
+.menu-grupo-titulo::-webkit-details-marker { display: none; }
+.menu-grupo-titulo .quantos { margin-left: auto; font-weight: 400; letter-spacing: 0; opacity: .7; }
+.menu-grupo-titulo .i { transition: transform .3s; }
+.menu-grupo[open] .menu-grupo-titulo .i { transform: rotate(180deg); }
+
+/* Itens: nome ..... preço  [VER] */
+.menu-lista { list-style: none; padding: 6px 0 0; margin: 0; }
+.menu-item { padding: 8px 0; }
+.menu-linha-item { display: flex; align-items: baseline; gap: 6px; }
+.menu-nome { font-weight: 500; font-size: .95rem; }
+.menu-icone-flag { font-style: normal; font-size: .8rem; margin-left: 6px; }
+.menu-pontos { flex: 1; min-width: 14px; border-bottom: 1px dotted color-mix(in srgb, var(--menu-bege) 45%, transparent); transform: translateY(-4px); }
+.menu-preco { font-weight: 600; font-size: .92rem; color: var(--menu-dourado); white-space: nowrap; }
+.menu-desc { font-size: .78rem; font-weight: 300; opacity: .88; margin-top: 2px; max-width: 88%; }
+.menu-ver {
+  display: inline-flex; align-items: center; gap: 5px; align-self: center; margin-left: 10px; cursor: pointer; white-space: nowrap;
+  padding: 3px 11px 3px 9px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .28);
+  background: var(--menu-oliva); color: #fff; text-shadow: none;
+  font: 600 .66rem var(--fonte-menu); letter-spacing: .1em; transition: background .25s, transform .25s;
+}
+.menu-ver .i { width: 1.1em; height: 1.1em; color: #fff; }
+.menu-ver:hover { background: var(--menu-oliva-hover); transform: translateY(-1px); }
+.menu-legenda { text-align: center; margin: 26px 0; font-size: .88rem; opacity: .85; }
+
+@media (max-width: 560px) {
+  .menu-card { padding: 32px 20px 28px; }
+  .menu-cabecalho h3 { font-size: 1rem; letter-spacing: .12em; }
+  .menu-nome { font-size: .9rem; }
+  .menu-ver { margin-left: 6px; padding: 3px 9px 3px 7px; }
+}
+
+
+/* =====================================================================
+   9. EVENTOS E FAIXA DE RESERVA
+   ===================================================================== */
+.duas-fotos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.duas-fotos .foto { aspect-ratio: 3 / 4; }
+.duas-fotos .descida { margin-top: 32px; }
+
+.faixa {
+  padding: 130px 0; text-align: center; color: #fff;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--fundo-escuro) 52%, transparent), color-mix(in srgb, var(--fundo-escuro) 62%, transparent)),
+    url(img/piscina.webp);
+  background-size: cover; background-position: center; background-attachment: fixed;
+}
+.faixa h2 { font-size: clamp(1.8rem, 4.5vw, 3rem); max-width: 720px; margin: 0 auto 12px; color: #fff; }
+.faixa p { font-size: 1.1rem; opacity: .95; }
+
+
+/* =====================================================================
+   10. GALERIA E LIGHTBOX
+   ===================================================================== */
+.mosaico { display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-rows: 140px; gap: 12px; }
+@media (min-width: 800px) { .mosaico { grid-template-columns: repeat(4, 1fr); grid-auto-rows: 180px; } }
+.mosaico button { border: 0; padding: 0; border-radius: var(--raio); overflow: hidden; cursor: zoom-in; background: none; }
+.mosaico .foto { aspect-ratio: auto; height: 100%; }
+.mosaico .larga { grid-column: span 2; }
+.mosaico .alta { grid-row: span 2; }
+
+.lightbox { position: fixed; inset: 0; z-index: 70; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(0, 0, 0, .9); cursor: pointer; }
+.lightbox.escondido { display: none; }
+.lightbox img { max-width: 100%; max-height: 100%; border-radius: var(--raio); animation: ampliar .35s; }
+.lightbox button { position: absolute; top: 14px; right: 20px; background: none; border: 0; color: #fff; font-size: 2rem; }
+
+
+/* =====================================================================
+   11. TESTEMUNHOS, CONTACTO E RODAPÉ
+   ===================================================================== */
+.fundo-testemunhos {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--fundo) 86%, transparent), color-mix(in srgb, var(--fundo) 92%, transparent)),
+    url(img/natureza2.webp);
+  background-size: cover; background-position: center;
+}
+.testemunho { min-height: 150px; display: flex; flex-direction: column; justify-content: center; font-size: 1.15rem; font-style: italic; }
+.testemunho b { font-style: normal; font-size: .9rem; margin-top: 10px; }
+.pontos { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
+.pontos button { width: 12px; height: 12px; border-radius: 50%; border: 0; background: var(--fundo-alt); cursor: pointer; }
+.pontos .ativo { background: var(--botao); }
+
+.info { list-style: none; padding: 0; margin: 18px 0 0; }
+.info li { display: flex; align-items: center; gap: 12px; padding: 7px 0; }
+.info .i { color: var(--botao); }
+.info .i.dourado, .info .i.apagada { color: var(--estrela); margin-right: -8px; }
+.mapa { width: 100%; height: 340px; border: 0; border-radius: var(--raio); box-shadow: 0 14px 34px color-mix(in srgb, var(--texto) 20%, transparent); }
+
+.rodape {
+  padding: 50px 0 24px; color: var(--texto-claro);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--fundo-escuro) 90%, transparent), color-mix(in srgb, var(--fundo-escuro) 95%, transparent)),
+    url(img/cobertura.webp);
+  background-size: cover; background-position: center;
+}
+.rodape h3, .rodape h4 { color: var(--texto-claro); margin-bottom: 8px; }
+.rodape a { text-decoration: none; }
+.rodape a:hover { color: #fff; }
+.rodape-grade { display: grid; gap: 26px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); font-size: .92rem; }
+.rodape-logo { background: #fff; border-radius: 22px; padding: 6px; margin-bottom: 12px; object-fit: contain; }
+.direitos { grid-column: 1 / -1; padding-top: 18px; font-size: .8rem; border-top: 1px solid color-mix(in srgb, var(--texto-claro) 20%, transparent); }
+
+.redes { display: flex; gap: 10px; margin-top: 16px; }
+.redes a {
+  width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; transition: .25s;
+  border: 1px solid color-mix(in srgb, var(--texto-claro) 40%, transparent);
+}
+.redes a:hover { background: var(--botao); border-color: var(--botao); color: #fff; transform: translateY(-3px); }
+
+
+/* =====================================================================
+   12. BOTÕES FLUTUANTES (WhatsApp e voltar ao topo)
+   ===================================================================== */
+.btn-whatsapp {
+  position: fixed; right: 18px; bottom: 18px; z-index: 55; isolation: isolate;
+  width: 56px; height: 56px; border-radius: 50%; background: var(--whatsapp); color: #fff;
+  display: flex; align-items: center; justify-content: center; text-decoration: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .25);
+}
+.btn-whatsapp .i { width: 30px; height: 30px; stroke: #fff; stroke-width: 1.7; }
+.btn-whatsapp::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 50%; background: var(--whatsapp); opacity: .5; animation: pulso 2.4s infinite; }
+
+.btn-topo {
+  position: fixed; right: 20px; bottom: 86px; z-index: 55; width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  border: 1px solid var(--fundo-alt); background: var(--fundo); color: var(--texto);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--texto) 20%, transparent);
+  opacity: 0; pointer-events: none; transition: .3s;
+}
+.btn-topo.visivel { opacity: 1; pointer-events: auto; }
+.btn-topo:hover { background: var(--botao); color: #fff; }
+
+
+/* =====================================================================
+   13. POPUP "VER" (foto grande ou vídeo)
+   ===================================================================== */
+.popup {
+  position: fixed; inset: 0; z-index: 80; display: flex; align-items: center; justify-content: center; padding: 18px;
+  background: rgba(15, 10, 6, .82); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px);
+  opacity: 0; pointer-events: none; transition: opacity .3s;
+}
+.popup.aberto { opacity: 1; pointer-events: auto; }
+.popup-caixa {
+  position: relative; width: 100%; max-width: 600px; max-height: 92vh; overflow: auto;
+  background: var(--menu-bege); color: var(--texto); border-radius: var(--raio);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .55);
+  transform: translateY(28px) scale(.95); transition: transform .38s cubic-bezier(.2, .8, .2, 1);
+}
+.popup.aberto .popup-caixa { transform: none; }
+.popup-midia { aspect-ratio: 4 / 3; background: #1d1610; border-radius: var(--raio) var(--raio) 0 0; overflow: hidden; }
+.popup-midia img, .popup-midia video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.popup-corpo { padding: 22px 26px 28px; font-family: var(--fonte-menu); }
+.popup-corpo h3 { font: 700 1.4rem var(--fonte-menu-titulo); }
+.popup-preco { margin: 4px 0 10px; font-weight: 600; font-size: 1.15rem; color: var(--menu-oliva); }
+.popup-desc { margin-bottom: 12px; font-size: .92rem; opacity: .85; }
+.popup-etiqueta { display: inline-block; margin-bottom: 14px; padding: 3px 12px; border-radius: 999px; font-size: .72rem; background: #e9e1cf; color: #6b5a48; }
+.popup-corpo .btn { display: flex; margin-top: 6px; }
+.popup-fechar {
+  position: absolute; top: 12px; right: 12px; z-index: 2; width: 42px; height: 42px; border: 0; border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; background: rgba(20, 14, 8, .6); color: #fff; transition: background .25s, transform .25s;
+}
+.popup-fechar:hover { background: var(--botao); transform: rotate(90deg); }
+.popup-fechar .i { width: 20px; height: 20px; stroke: #fff; }
+.popup-sem-foto { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: linear-gradient(180deg, #3a2a1b, #1d1610); color: var(--menu-bege); }
+.popup-sem-foto p { font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
+.popup-sem-foto .menu-logo { margin: 0; }
+@media (max-width: 560px) { .popup-corpo { padding: 18px 18px 22px; } }
+
+
+/* =====================================================================
+   14. ANIMAÇÕES E ACESSIBILIDADE
+   ===================================================================== */
+.aparece { opacity: 0; transform: translateY(18px); transition: opacity .7s, transform .7s; }
+.aparece.visivel { opacity: 1; transform: none; }
+.cartao.aparece { transition: opacity .7s, transform .4s, box-shadow .4s; }
+.cartao.aparece.visivel:hover { transform: translateY(-6px); }
+
+@keyframes subir { to { opacity: 1; transform: none; } }
+@keyframes flutuar { 50% { transform: translateY(-8px); } }
+@keyframes pulso { to { transform: scale(1.7); opacity: 0; } }
+@keyframes ampliar { from { opacity: 0; transform: scale(.92); } }
+@keyframes aparecer-painel { from { opacity: 0; transform: translateY(10px); } }
+
+/* Em ecrãs pequenos o fundo "fixo" não funciona bem: fica normal */
+@media (max-width: 900px) { .fundo-restaurante, .faixa { background-attachment: scroll; } }
+
+/* Quem desativa animações no telemóvel/computador não vê movimento */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .aparece, .hero-texto > * { opacity: 1; transform: none; }
+  .hero-folhas { display: none; }
+  html { scroll-behavior: auto; }
+}

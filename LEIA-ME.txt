@@ -1,0 +1,53 @@
+=====================================================================
+ MULOTANE LODGE - GUIA RÁPIDO DO PROJETO
+=====================================================================
+
+COMO ABRIR / PUBLICAR
+  - Para ver no computador: abra o index.html no navegador.
+  - Para publicar: envie TODA a pasta para a hospedagem (Netlify, Vercel, GitHub Pages, etc.).
+    Mantenha os ficheiros e pastas juntos, com os mesmos nomes.
+
+ESTRUTURA (cada ficheiro tem uma função)
+  index.html          Estrutura e textos fixos da página (títulos, parágrafos)
+  style.css           Cores, tipos de letra, tamanhos, animações
+  config.js           Telefone/WhatsApp, redes sociais, mensagens, quartos, galeria, testemunhos
+  menu-data.js        Produtos e preços do cardápio
+  midia-produtos.js   Foto ou vídeo de cada produto (botão VER)
+  script.js           Comportamento (abas, filtros, popup, efeitos). Normalmente não precisa de mexer.
+  cardapio-mulotane.pdf   Cardápio para descarregar
+  img/                Fotos do site          fotos/  videos/   Fotos e vídeos dos produtos
+  favicon.png         Ícone da aba do navegador
+
+QUERO MUDAR...                                   EDITE
+  A cor dos botões                               style.css  ->  --botao        (início do ficheiro)
+  A cor verde / cor do texto / cor de fundo      style.css  ->  --verde, --texto, --fundo
+  As cores do cardápio                           style.css  ->  --menu-bege, --menu-madeira, --menu-oliva, --menu-dourado
+  Quão escuro fica o fundo do cardápio           style.css  ->  --menu-sobreposicao-topo e --menu-sobreposicao-base
+  O tipo de letra                                style.css  ->  --fonte-titulo, --fonte-texto (e trocar o link no <head> do index.html)
+  O número de WhatsApp ou de telefone            config.js  ->  whatsapp, telefone, telefoneTexto
+  Instagram / Facebook                           config.js  ->  redes
+  A mensagem que abre no WhatsApp                config.js  ->  mensagens
+  Quartos, galeria, testemunhos, experiências    config.js
+  Um texto da página (título, parágrafo)         index.html (procure o texto)
+  Um preço ou um produto                         menu-data.js
+  A foto/vídeo de um produto (botão VER)         midia-produtos.js (e grave o ficheiro em fotos/ ou videos/)
+  A foto de fundo de um cartão do cardápio       menu-data.js -> campo "foto"
+  O logótipo                                     img/logo.webp (mesmo nome) e img/logo-mark.webp (cabeçalho)
+  O horário do restaurante                       index.html (procure "06:30")
+  As coordenadas do mapa                         config.js -> mapa
+
+SE ALGO NÃO FUNCIONA
+  - Página sem estilo ........... style.css não está na mesma pasta do index.html.
+  - Botões não abrem WhatsApp ... confira config.js (número só com dígitos) e se config.js está na pasta.
+  - Cardápio vazio .............. erro de vírgula/aspas em menu-data.js. Abra a consola do navegador (F12) para ver a linha.
+  - Foto não aparece ............ confira o nome e a pasta (maiúsculas e minúsculas contam).
+  - Mapa e fontes não aparecem .. precisam de internet.
+
+AINDA PROVISÓRIO (para substituir)
+  - Instagram e Facebook (config.js) estão com "#".
+  - Fotos das 3 experiências (img/jantar.svg, churrasco.svg, aula.svg) são ilustrações.
+  - Produtos sem foto própria: bebidas e gelados mostram a foto da secção ("Foto ilustrativa");
+    comida mostra "Foto em breve". Preencha midia-produtos.js.
+  - O PDF não se atualiza sozinho ao mudar menu-data.js.
+  - Direitos das fotos do fundo do cardápio (img/menu-*.webp): confirme antes de publicar.
+=====================================================================

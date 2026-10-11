@@ -1,0 +1,2 @@
+Fotos do lodge que ainda não estão no site (quartos, chalés, receção...).
+Para usar uma: mova-a para a pasta img/ e indique o caminho no config.js (lista "quartos" ou "galeria").

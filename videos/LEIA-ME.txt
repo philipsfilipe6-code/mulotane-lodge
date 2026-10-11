@@ -1,0 +1,1 @@
+Coloque aqui os vídeos curtos dos produtos (.mp4, 5-15 s, até ~5 MB). Depois escreva o caminho em midia-produtos.js, com tipo: "video".

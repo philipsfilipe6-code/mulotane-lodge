@@ -1,2 +1,0 @@
-Fotos reais do lodge (.webp) + logótipo (logo.webp). Os .svg são ilustrações provisórias só para o que ainda não tem foto (pratos, jantar, churrasco, aula de matapa).
-Para trocar: grava um .webp com o mesmo nome.

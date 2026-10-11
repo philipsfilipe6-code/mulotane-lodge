@@ -1,2 +1,0 @@
-# mulotane-lodge
-exemplar
